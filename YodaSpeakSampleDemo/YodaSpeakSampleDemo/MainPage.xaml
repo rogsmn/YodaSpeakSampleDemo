@@ -2,10 +2,39 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:YodaSpeakSampleDemo"
+             xmlns:vm="clr-namespace:YodaSpeakSampleDemo.ViewModels"
+             Title="Yoda Speak Sample Demo"
              x:Class="YodaSpeakSampleDemo.MainPage">
 
-	<Label Text="Welcome to Xamarin Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <vm:MainPageViewModel x:Key="viewModel" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="10,40,10,10" Android="10,20,10,10" WinPhone="10,20,10,10" />
+    </ContentPage.Padding>
+    <StackLayout Orientation="Vertical" HorizontalOptions="Center" BindingContext="{StaticResource viewModel}">
+        <Label Text="Yoda Sentence Translator" FontSize="Large" HorizontalTextAlignment="Center" FontAttributes="Bold" Margin="0,0,0,20" />
+        <Label Text="Enter Sentence" />
+        <Entry x:Name="originalSentence" Text="{Binding OriginalSentence, Mode=TwoWay}" 
+               Placeholder="e.g You will learn how to speak like me someday.  Oh wait.">
+            <Entry.Triggers>
+                <Trigger TargetType="Entry" Property="IsFocused" Value="True">
+                    <Setter Property="BackgroundColor" Value="Yellow" />
+                </Trigger>
+            </Entry.Triggers>
+        </Entry>
+        <Label Text="Translated Sentence" />
+        <Label x:Name="tranlatedSentence" Text="{Binding TranslatedSentence}" />
+        <Button x:Name="translateButton" Text="Translate Sentence" Command="{Binding TranslateSentenceCommand}">
+            <Button.Triggers>
+                <DataTrigger TargetType="Button"
+                             Binding="{Binding Source=OriginalSentence, Path=Length}" Value="0">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+    </StackLayout>
 
 </ContentPage>
