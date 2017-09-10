@@ -34,10 +34,18 @@ namespace YodaSpeakSampleDemo.ViewModels
             set { SetProperty(ref _translatedSentence, value); }
         }
 
-        private void ExecuteTranslateSentence(object sender)
+        private async void ExecuteTranslateSentence(object sender)
         {
+            //TranslateSentenceCommand.CanExecute(false);
             Debug.WriteLine("Sentence to be translated is " + OriginalSentence);
-            TranslatedSentence = _yodaTranslationService.TranslateSentence(OriginalSentence);
+            try
+            {
+                TranslatedSentence = await _yodaTranslationService.TranslateSentenceAsync(OriginalSentence);
+            }
+            catch(Exception ex)
+            {
+                TranslatedSentence = "Failed to translate sentence";
+            }            
         }
 
         public ICommand TranslateSentenceCommand { private set; get; }

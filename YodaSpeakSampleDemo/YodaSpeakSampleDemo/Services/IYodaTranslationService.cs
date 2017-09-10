@@ -8,6 +8,6 @@ namespace YodaSpeakSampleDemo.Services
 {
     public interface IYodaTranslationService
     {
-        string TranslateSentence(string sentence);
+        Task<string> TranslateSentenceAsync(string sentence);
     }
 }
