@@ -7,8 +7,7 @@ using Xamarin.UITest.Queries;
 
 namespace YodaSpeakSampleDemo.UITest
 {
-    [TestFixture(Platform.Android)]
-    [TestFixture(Platform.iOS)]
+    [TestFixture(Platform.Android)]    
     public class Tests
     {
         IApp app;
@@ -26,9 +25,10 @@ namespace YodaSpeakSampleDemo.UITest
         }
 
         [Test]
-        public void AppLaunches()
+        public void Test_Yoda_Speak_API_Sentence()
         {
-            app.Screenshot("First screen.");
+            app.EnterText("originalSentence", "You will learn how to speak like me someday. Oh wait.");
+            app.Tap("translateButton");
         }
     }
 }

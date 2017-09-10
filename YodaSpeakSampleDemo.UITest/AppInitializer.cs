@@ -14,7 +14,7 @@ namespace YodaSpeakSampleDemo.UITest
             {
                 return ConfigureApp
                     .Android
-                    .ApkFile(@"../../../YodaSpeakSampleDemo/YodaSpeakSampleDemo.Android/bin/Debug/YodaSpeakSampleDemo.apk")
+                    .ApkFile(@"../../../YodaSpeakSampleDemo/YodaSpeakSampleDemo.Android/bin/Release/YodaSpeakSampleDemo.Android.apk")
                     .StartApp();
             }
 
