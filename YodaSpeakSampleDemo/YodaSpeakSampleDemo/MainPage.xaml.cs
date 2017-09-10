@@ -11,7 +11,7 @@ namespace YodaSpeakSampleDemo
     {
         public MainPage()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
     }
 }

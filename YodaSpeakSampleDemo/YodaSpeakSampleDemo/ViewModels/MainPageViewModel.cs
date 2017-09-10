@@ -18,9 +18,14 @@ namespace YodaSpeakSampleDemo.ViewModels
         public MainPageViewModel()
         {
             _yodaTranslationService = new YodaTranslationService();
-            TranslateSentenceCommand = new Command(ExecuteTranslateSentence);
+            TranslateSentenceCommand = new Command(execute: ExecuteTranslateSentence, canExecute: CanExecuteTranslateSentence);
             TranslatedSentence = "-";
-            OriginalSentence = "";
+            OriginalSentence = String.Empty;
+        }
+
+        private bool CanExecuteTranslateSentence(object arg)
+        {
+            return OriginalSentence.Length > 0;
         }
 
         public string OriginalSentence

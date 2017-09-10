@@ -17,8 +17,10 @@
     <StackLayout Orientation="Vertical" HorizontalOptions="Center" BindingContext="{StaticResource viewModel}">
         <Label Text="Yoda Sentence Translator" FontSize="Large" HorizontalTextAlignment="Center" FontAttributes="Bold" Margin="0,0,0,20" />
         <Label Text="Enter Sentence" />
-        <Entry x:Name="originalSentence" Text="{Binding OriginalSentence, Mode=TwoWay}" 
-               Placeholder="e.g You will learn how to speak like me someday.  Oh wait.">
+        <Entry x:Name="originalSentence" 
+               AutomationId="originalSentence" 
+               Text="{Binding OriginalSentence}" 
+               Placeholder="e.g You will learn how to speak like me someday. Oh wait.">
             <Entry.Triggers>
                 <Trigger TargetType="Entry" Property="IsFocused" Value="True">
                     <Setter Property="BackgroundColor" Value="Yellow" />
@@ -26,11 +28,15 @@
             </Entry.Triggers>
         </Entry>
         <Label Text="Translated Sentence" />
-        <Label x:Name="tranlatedSentence" Text="{Binding TranslatedSentence}" />
-        <Button x:Name="translateButton" Text="Translate Sentence" Command="{Binding TranslateSentenceCommand}">
+        <Label x:Name="tranlatedSentence" AutomationId="tranlatedSentence" Text="{Binding TranslatedSentence}" />
+        <Button x:Name="translateButton" AutomationId="translateButton"                
+                Text="Translate Sentence"                
+                Command="{Binding TranslateSentenceCommand}">
             <Button.Triggers>
                 <DataTrigger TargetType="Button"
-                             Binding="{Binding Source=OriginalSentence, Path=Length}" Value="0">
+                     Binding="{Binding Source={x:Reference originalSentence},
+                                       Path=Text.Length}"
+                     Value="0">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Button.Triggers>
