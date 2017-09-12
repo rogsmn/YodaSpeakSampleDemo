@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YodaSpeakSampleDemo.Services;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -16,8 +12,8 @@ namespace YodaSpeakSampleDemo.ViewModels
     /// </summary>
     public class MainPageViewModel : ViewModelBase
     {
-        string originalSentence, translatedSentence;
-        bool canFetchNewSentence;
+        private string originalSentence, translatedSentence;
+        private bool canFetchNewSentence;
 
         private readonly IYodaTranslationService yodaTranslationService;
 

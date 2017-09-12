@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using YodaSpeakSampleDemo.Constants;
 
@@ -32,7 +29,7 @@ namespace YodaSpeakSampleDemo.Services
         public async Task<string> TranslateSentenceAsync(string sentence)
         {
             var url = GetTranslateSentenceUri(sentence);
-            string translatedSentence = "";
+            var translatedSentence = "";
             try
             {
                 using(var httpClient = new HttpClient())
