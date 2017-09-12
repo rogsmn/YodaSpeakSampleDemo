@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using YodaSpeakSampleDemo.Constants;
 
 namespace YodaSpeakSampleDemo.Services
 {
@@ -12,21 +13,15 @@ namespace YodaSpeakSampleDemo.Services
     /// YodaTranslationService implements IYodaTranslationService
     /// </summary>
     public class YodaTranslationService : IYodaTranslationService
-    {
-        //Used for fetching data
-        private readonly HttpClient HttpClient;
-        //API Endpoint
-        private const string APIEndpoint = "https://yoda.p.mashape.com/yoda";
-        //Key to be used when calling Yoda Speak API. Required
-        private const string MashupKey = "t9Yaye7t1GmshzKaI32jRX9fGAjlp1sDUhhjsnjlH07LYiFf1P";
+    {        
 
         public YodaTranslationService()
+        {            
+        }
+
+        public string GetTranslateSentenceUri(string sentence)
         {
-            HttpClient = new HttpClient();
-            HttpClient.DefaultRequestHeaders.Accept.Clear();
-            //Below two attributes needs to be set as required by Yoda Speak API
-            HttpClient.DefaultRequestHeaders.Add("X-Mashape-Key", MashupKey);
-            HttpClient.DefaultRequestHeaders.Add("Accept", "text/plain");
+            return YodaTranslationServiceConstant.APIENDPOINT + "?sentence=" + sentence;
         }
 
         /// <summary>
@@ -36,24 +31,29 @@ namespace YodaSpeakSampleDemo.Services
         /// <returns>Translated Sentence</returns>
         public async Task<string> TranslateSentenceAsync(string sentence)
         {
-            var url = APIEndpoint + "?sentence=" + sentence;
+            var url = GetTranslateSentenceUri(sentence);
             string translatedSentence = "";
             try
             {
-                HttpResponseMessage responseMessage = await HttpClient.GetAsync(url);                
-                switch (responseMessage.StatusCode)
+                using(var httpClient = new HttpClient())
                 {
-                    case System.Net.HttpStatusCode.OK:
-                        translatedSentence = await responseMessage.Content.ReadAsStringAsync();
-                        break;
-                    case System.Net.HttpStatusCode.ServiceUnavailable:
-                        translatedSentence = "Yoda Speak API Response: Service Unavailable";
-                        break;
-                    case System.Net.HttpStatusCode.NotFound:
-                        translatedSentence = "Yoda Speak API Response: Not Found";
-                        break;
-                }
-                Debug.WriteLine(translatedSentence + " is the translated sentence");
+                    httpClient.DefaultRequestHeaders.Add("X-Mashape-Key", YodaTranslationServiceConstant.MASHUPKEY);
+                    httpClient.DefaultRequestHeaders.Add("Accept", "text/plain");
+                    HttpResponseMessage responseMessage = await httpClient.GetAsync(url);
+                    switch (responseMessage.StatusCode)
+                    {
+                        case System.Net.HttpStatusCode.OK:
+                            translatedSentence = await responseMessage.Content.ReadAsStringAsync();
+                            break;
+                        case System.Net.HttpStatusCode.ServiceUnavailable:
+                            translatedSentence = YodaTranslationServiceConstant.ERROR_SERVICE_UNAVAILABLE;
+                            break;
+                        case System.Net.HttpStatusCode.NotFound:
+                            translatedSentence = YodaTranslationServiceConstant.ERROR_NOTFOUND;
+                            break;
+                    }
+                    Debug.WriteLine(translatedSentence + " is the translated sentence");
+                }                
             }
             catch (Exception ex)
             {

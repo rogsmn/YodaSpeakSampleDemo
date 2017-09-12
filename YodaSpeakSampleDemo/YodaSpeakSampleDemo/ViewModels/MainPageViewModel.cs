@@ -7,6 +7,7 @@ using YodaSpeakSampleDemo.Services;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Diagnostics;
+using YodaSpeakSampleDemo.Constants;
 
 namespace YodaSpeakSampleDemo.ViewModels
 {
@@ -15,17 +16,17 @@ namespace YodaSpeakSampleDemo.ViewModels
     /// </summary>
     public class MainPageViewModel : ViewModelBase
     {
-        string _originalSentence, _translatedSentence;
-        bool _canFetchNewSentence;
+        string originalSentence, translatedSentence;
+        bool canFetchNewSentence;
 
-        private readonly IYodaTranslationService _yodaTranslationService;
+        private readonly IYodaTranslationService yodaTranslationService;
 
         /// <summary>
         /// Default Constructor
         /// </summary>
         public MainPageViewModel()
         {
-            _yodaTranslationService = new YodaTranslationService();
+            yodaTranslationService = new YodaTranslationService();
             TranslateSentenceCommand = new Command(execute: ExecuteTranslateSentence, canExecute: CanExecuteTranslateSentence);
             TranslatedSentence = "-";
             OriginalSentence = String.Empty;
@@ -43,16 +44,16 @@ namespace YodaSpeakSampleDemo.ViewModels
         /// </summary>
         public string OriginalSentence
         {
-            get { return _originalSentence; }
-            set { SetProperty(ref _originalSentence, value); }
+            get { return originalSentence; }
+            set { SetProperty(ref originalSentence, value); }
         }
         /// <summary>
         /// Stores the result of api response from yoda speak api
         /// </summary>
         public string TranslatedSentence
         {
-            get { return _translatedSentence; }
-            set { SetProperty(ref _translatedSentence, value); }
+            get { return translatedSentence; }
+            set { SetProperty(ref translatedSentence, value); }
         }
 
         //Callback method called when Translate Sentence button is clicked
@@ -62,11 +63,11 @@ namespace YodaSpeakSampleDemo.ViewModels
             try
             {
                 CanFetchNewSentence = false;
-                TranslatedSentence = await _yodaTranslationService.TranslateSentenceAsync(OriginalSentence);
+                TranslatedSentence = await yodaTranslationService.TranslateSentenceAsync(OriginalSentence);
             }
             catch(Exception ex)
             {
-                TranslatedSentence = "Error: Failed to translate sentence";
+                TranslatedSentence = MainPageConstant.TRANSLATE_ERROR;
             }
             finally
             {
@@ -80,8 +81,8 @@ namespace YodaSpeakSampleDemo.ViewModels
         /// </summary>
         public bool CanFetchNewSentence
         {
-            get { return _canFetchNewSentence; }
-            set { SetProperty(ref _canFetchNewSentence, value); }
+            get { return canFetchNewSentence; }
+            set { SetProperty(ref canFetchNewSentence, value); }
         }
     }
 }

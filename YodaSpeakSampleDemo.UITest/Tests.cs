@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
+using System.Threading;
 
 namespace YodaSpeakSampleDemo.UITest
 {
@@ -27,8 +28,16 @@ namespace YodaSpeakSampleDemo.UITest
         [Test]
         public void Test_Yoda_Speak_API_Sentence()
         {
-            app.EnterText("originalSentence", "You will learn how to speak like me someday. Oh wait.");
+            app.EnterText("originalSentence", "you will learn");
             app.Tap("translateButton");
+            app.WaitFor(() =>
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+                return true;
+            });
+            var expectedResult = "Learn, you will";
+            var result = app.Query(c => c.Marked("tranlatedSentence")).FirstOrDefault().Text;
+            Assert.AreEqual(expectedResult, result);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace YodaSpeakSampleDemo.Services
     public interface IYodaTranslationService
     {
         Task<string> TranslateSentenceAsync(string sentence);
+        string GetTranslateSentenceUri(string sentence);
     }
 }
